@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Form</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+      body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.input-field {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.error {
+    color: red;
+    font-size: 12px;
+    display: none;
+}
+
+.success {
+    color: green;
+    font-size: 12px;
+    display: none;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Signup Form</h2>
+        <form id="signupForm">
+            <div class="input-field">
+                <label for="email">Email:</label>
+                <input type="text" id="email" name="email" placeholder="Enter your email" oninput="validateEmail()">
+                <small id="emailError" class="error"></small>
+            </div>
+            <div class="input-field">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" oninput="validatePassword()">
+                <small id="passwordError" class="error"></small>
+            </div>
+            <div class="input-field">
+                <button type="button" onclick="submitForm()">Submit</button>
+                <small id="successMessage" class="success"></small>
+            </div>
+        </form>
+    </div>
+
+    <script src="scripts.js">
+      // Validation for Email
+function validateEmail() {
+    const email = document.getElementById("email").value;
+    const emailError = document.getElementById("emailError");
+    const successMessage = document.getElementById("successMessage");
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (email.length > 3 && emailPattern.test(email)) {
+        emailError.style.display = "none";
+        if (validatePassword()) {
+            successMessage.innerHTML = "All good to go!";
+            successMessage.style.display = "block";
+        }
+    } else {
+        emailError.innerHTML = "Invalid email (must contain '@' and '.').";
+        emailError.style.display = "block";
+        successMessage.style.display = "none";
+    }
+}
+
+// Validation for Password
+function validatePassword() {
+    const password = document.getElementById("password").value;
+    const passwordError = document.getElementById("passwordError");
+    const successMessage = document.getElementById("successMessage");
+
+    if (password.length > 8) {
+        passwordError.style.display = "none";
+        if (validateEmail()) {
+            successMessage.innerHTML = "All good to go!";
+            successMessage.style.display = "block";
+        }
+        return true;
+    } else {
+        passwordError.innerHTML = "Password must be more than 8 characters.";
+        passwordError.style.display = "block";
+        successMessage.style.display = "none";
+        return false;
+    }
+}
+
+// Submit Form
+function submitForm() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    if (validateEmail() && validatePassword()) {
+        const confirmation = confirm("Are you sure you want to sign up?");
+        if (confirmation) {
+            alert("Successful signup!");
+            // Clear form
+            document.getElementById("signupForm").reset();
+            document.getElementById("successMessage").style.display = "none";
+        } else {
+            window.location.reload(); // Redirect to the same page
+        }
+    }
+}
+
+    </script>
+</body>
+</html>
